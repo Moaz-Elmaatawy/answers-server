@@ -1,0 +1,14 @@
+# ninja log v5
+8	101	1671140276075857603	CMakeFiles/client_server.dir/server.cpp.o	33c198e313d332a5
+7	101	1671140276079857603	CMakeFiles/client_server.dir/client.cpp.o	480d82f6bab4edbb
+6	381	1671140276359857587	CMakeFiles/client_server.dir/main.cpp.o	ae30b396b4389b82
+2	51	1671141386251795145	CMakeFiles/client_server.dir/server.cpp.o	33c198e313d332a5
+1	53	1671141386251795145	CMakeFiles/client_server.dir/client.cpp.o	480d82f6bab4edbb
+1	309	1671141386507795131	CMakeFiles/client_server.dir/main.cpp.o	ae30b396b4389b82
+0	67	1671141434051792456	CMakeFiles/client_server.dir/client.cpp.o	480d82f6bab4edbb
+1	68	1671141434051792456	CMakeFiles/client_server.dir/server.cpp.o	33c198e313d332a5
+1	51	1671141439527792148	CMakeFiles/client_server.dir/server.cpp.o	33c198e313d332a5
+1	47	1671141462195790873	CMakeFiles/client_server.dir/server.cpp.o	33c198e313d332a5
+47	124	1671141462271790869	client_server	7cbffb0a0a639e83
+1	306	1671141493095789135	CMakeFiles/client_server.dir/main.cpp.o	ae30b396b4389b82
+306	396	1671141493183789130	client_server	7cbffb0a0a639e83
