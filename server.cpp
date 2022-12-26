@@ -25,22 +25,36 @@ using namespace std;
 vector<string>studentAnswers;
 string s ="";
 // Function designed for chat between client and server.
-void func(int connfd)
+int counter1=0 ,counter2=0;
+void func(int id,int connfd, int sockfd)
 {
-    char buff[MAX];
-    int n;
-    bzero(buff, MAX);
-    int receivedBytes = 0 , totalReceivedBytes = 0;
+    struct sockaddr_in  cli;
+    int len = sizeof(cli);
+    while(1){
+        connfd = accept(sockfd, (SA*)&cli, reinterpret_cast<socklen_t *>(&len));
+        if (connfd < 0) {
+            printf("server accept failed...\n");
+            continue;;
+        }
+        char buff[MAX];
+        int n;
+        bzero(buff, MAX);
+        int receivedBytes = 0 , totalReceivedBytes = 0;
 
-    //while (totalReceivedBytes < 900) {
-        receivedBytes+=recv(connfd, buff+totalReceivedBytes , MAX-totalReceivedBytes ,0);
-        totalReceivedBytes+=receivedBytes;
-        //cout<<"totalReceivedBytes = "<<totalReceivedBytes <<endl;
-    //}
-    if(close(connfd) != 0)
-        cout<<"error while closing connection\n";
-    s= string(buff ,buff + totalReceivedBytes);
-    close(connfd);
+        //while (totalReceivedBytes < 900) {
+            receivedBytes+=recv(connfd, buff+totalReceivedBytes , MAX-totalReceivedBytes ,0);
+            totalReceivedBytes+=receivedBytes;
+            //cout<<"totalReceivedBytes from "<<id<<" = "<<totalReceivedBytes <<endl;
+        //}
+        //if(close(connfd) != 0)
+        //   cout<<"error while closing connection\n";
+        string received= string(buff ,buff + totalReceivedBytes);
+        if( id == 1)
+            counter1++;
+        else 
+            counter2++;
+        close(connfd);
+    }
 }
 
 
@@ -76,6 +90,9 @@ int main()
 
     // Now server is ready to listen and verification
     int count = 0;
+    vector<thread> threads;
+    for (int id = 1; id <=2; id++)
+        threads.emplace_back(func,id,connfd,sockfd);
     while(1){
         if ((listen(sockfd, 300)) != 0) {
             printf("Listen failed...\n");
@@ -83,21 +100,19 @@ int main()
         }
         //else
             //printf("Server listening..\n");
-        len = sizeof(cli);
+        
 
-        // Accept the data packet from client and verification
-        connfd = accept(sockfd, (SA*)&cli, reinterpret_cast<socklen_t *>(&len));
-        if (connfd < 0) {
-            printf("server accept failed...\n");
-            exit(0);
-        }
-        //else
-            //printf("server accept the client...\n");
+        //func(connfd,sockfd);
 
-        func(connfd);
-        count++ ;
-        if(count %10 == 0)cout<<count<<endl;
+        //count++ ;
+        //if(count %10 == 0)cout<<count<<endl;
+        if((counter1+counter2) % 1000 ==0)
+        cout<<counter1+counter2<<endl;
     }
+    
+    
     //
+    for (auto& thread : threads)
+        thread.join();
     close(sockfd);
 }
