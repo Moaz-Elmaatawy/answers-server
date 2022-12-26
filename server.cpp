@@ -15,7 +15,8 @@
 #include <thread>
 
 #define MAX 10000
-#define PORT 8086
+#define PORT 8080
+
 #define NUMBER_OF_STUDENTS 1000000
 #define SA struct sockaddr
 
@@ -31,14 +32,14 @@ void func(int connfd)
     bzero(buff, MAX);
     int receivedBytes = 0 , totalReceivedBytes = 0;
 
-    while (totalReceivedBytes < 620) {
+    //while (totalReceivedBytes < 900) {
         receivedBytes+=recv(connfd, buff+totalReceivedBytes , MAX-totalReceivedBytes ,0);
         totalReceivedBytes+=receivedBytes;
         //cout<<"totalReceivedBytes = "<<totalReceivedBytes <<endl;
-    }
-    //if(close(connfd) != 0)
-        //cout<<"error while closing connection\n";
-    s.append(string(buff ,buff + totalReceivedBytes));
+    //}
+    if(close(connfd) != 0)
+        cout<<"error while closing connection\n";
+    s= string(buff ,buff + totalReceivedBytes);
     close(connfd);
 }
 
@@ -46,7 +47,7 @@ void func(int connfd)
 // Driver function
 int main()
 {
-    freopen("out.txt","w",stdout);
+    //freopen("out.txt","w",stdout);
     int sockfd, connfd, len;
     struct sockaddr_in servaddr, cli;
     //studentAnswers.resize(NUMBER_OF_STUDENTS);
@@ -74,7 +75,8 @@ int main()
         //printf("Socket successfully binded..\n");
 
     // Now server is ready to listen and verification
-    for(int i=0;i<10000;++i){
+    int count = 0;
+    while(1){
         if ((listen(sockfd, 300)) != 0) {
             printf("Listen failed...\n");
             exit(0);
@@ -93,9 +95,9 @@ int main()
             //printf("server accept the client...\n");
 
         func(connfd);
-
-
+        count++ ;
+        if(count %10 == 0)cout<<count<<endl;
     }
-    cout<<s<<endl;
+    //
     close(sockfd);
 }
