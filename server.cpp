@@ -106,8 +106,11 @@ int main()
 
         //count++ ;
         //if(count %10 == 0)cout<<count<<endl;
-        if((counter1+counter2) % 1000 ==0)
+        
+        if(count !=(counter1+counter2)  && (counter1+counter2) % 1000 ==0){
         cout<<counter1+counter2<<endl;
+        count =(counter1+counter2);
+        }
     }
     
     
